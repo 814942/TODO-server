@@ -1,9 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { verifyToken } from "../utils/jwt";
-
-export interface AuthRequest extends Request {
-  user?: { id: number; email: string };
-}
+import { AuthRequest } from "../types/auth.types";
 
 export function authenticate(
   req: AuthRequest,

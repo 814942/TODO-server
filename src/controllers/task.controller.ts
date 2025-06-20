@@ -1,6 +1,6 @@
 import { Response, NextFunction } from "express";
 import * as taskService from "../services/task.service";
-import { AuthRequest } from "../middlewares/auth";
+import { AuthRequest } from "../types/auth.types";
 
 export async function createTask(
   req: AuthRequest,
