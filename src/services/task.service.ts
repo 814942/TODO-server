@@ -12,8 +12,8 @@ export async function getAllTasks(userId: number) {
   });
 }
 
-export async function getTask(id: number, userId: number) {
-  const task = await Task.findOne({ where: { id, userId }, raw: true });
+export async function getTask(id: number, userId: number, raw = true) {
+  const task = await Task.findOne({ where: { id, userId }, raw });
   if (!task) {
     const error: any = new Error("Tarea no encontrada");
     error.status = 404;
@@ -24,19 +24,14 @@ export async function getTask(id: number, userId: number) {
 }
 
 export async function updateTask(id: number, data: any, userId: number) {
-  const task = await Task.findOne({ where: { id, userId } });
-  if (!task) {
-    const error: any = new Error("Tarea no encontrada");
-    error.status = 404;
-    throw error;
-  }
+  const task = await getTask(id, userId, false);
 
   await task.update(data);
   return task;
 }
 
 export async function deleteTask(id: number, userId: number) {
-  const task = await getTask(id, userId);
+  const task = await getTask(id, userId, false);
   await task.destroy();
 }
 
