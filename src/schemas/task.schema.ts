@@ -14,3 +14,10 @@ export const updateTaskSchema = z.object({
   deadline: z.coerce.date().optional(),
   status: z.nativeEnum(TaskStatus).optional(),
 });
+
+export const updateTaskStatusSchema = z.object({
+  status: z.nativeEnum(TaskStatus, {
+    required_error: 'El estado es requerido',
+    invalid_type_error: 'Estado no válido',
+  })
+});

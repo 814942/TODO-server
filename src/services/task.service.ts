@@ -5,11 +5,15 @@ export async function createTask(data: any, userId: number) {
 }
 
 export async function getAllTasks(userId: number) {
-  return await Task.findAll({ where: { userId } });
+  return await Task.findAll({
+    where: { userId },
+    order: [["createdAt", "ASC"]],
+    raw: true,
+  });
 }
 
 export async function getTask(id: number, userId: number) {
-  const task = await Task.findOne({ where: { id, userId } });
+  const task = await Task.findOne({ where: { id, userId }, raw: true });
   if (!task) {
     const error: any = new Error("Tarea no encontrada");
     error.status = 404;
@@ -20,13 +24,33 @@ export async function getTask(id: number, userId: number) {
 }
 
 export async function updateTask(id: number, data: any, userId: number) {
-  const task = await getTask(id, userId);
+  const task = await Task.findOne({ where: { id, userId } });
+  if (!task) {
+    const error: any = new Error("Tarea no encontrada");
+    error.status = 404;
+    throw error;
+  }
+
   await task.update(data);
   return task;
 }
 
 export async function deleteTask(id: number, userId: number) {
   const task = await getTask(id, userId);
-
   await task.destroy();
+}
+
+export async function updateTaskStatus(
+  id: number,
+  status: string,
+  userId: number
+) {
+  const validStatuses = ["Pendiente", "En progreso", "Completada"];
+  if (!validStatuses.includes(status)) {
+    const error: any = new Error("Estado no válido");
+    error.status = 400;
+    throw error;
+  }
+
+  return await updateTask(id, { status }, userId);
 }
