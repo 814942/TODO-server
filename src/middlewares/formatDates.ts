@@ -4,8 +4,6 @@ import { toLocalISOString } from "../utils/date";
 const DATE_KEYS = ["createdAt", "updatedAt", "deadline"];
 
 function formatDatesDeep(obj: any, tz?: string): any {
-  console.log("🚀 ~ formatDatesDeep ~ tz:", tz);
-  console.log("🚀 ~ formatDatesDeep ~ obj:", obj);
   if (Array.isArray(obj)) {
     return obj.map((item) => formatDatesDeep(item, tz));
   } else if (obj && typeof obj === "object") {
