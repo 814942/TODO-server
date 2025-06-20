@@ -17,9 +17,26 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const whitelistParsed = process.env.WHITELIST
+  ? process.env.WHITELIST.split(",")
+  : [];
 
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || whitelistParsed.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    allowedHeaders:
+      "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+    credentials: true,
+  })
+);
 app.use(express.json());
-app.use(cors());
 app.use(helmet());
 app.use(morgan("dev"));
 
