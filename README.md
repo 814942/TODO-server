@@ -60,3 +60,8 @@ Copia el archivo .env.example a .env y ajusta los valores:
 * Hashing seguro de contraseñas con bcrypt.
 * Validación de datos con Zod.
 * Linting con ESLint y TypeScript.
+
+---
+
+🤘 by
+Pablo Garay
